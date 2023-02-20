@@ -1,7 +1,7 @@
 #!/bin/bash
 
 function ctrl_c(){
-  echo -e "[!] Saliendo..."
+  echo -e "[!] Exiting..."
   exit 1
 }
 
@@ -9,29 +9,29 @@ function ctrl_c(){
 #Ctrl + C
 trap ctrl_c INT
 
-declare -i parameter_counter=0
+declare -i c=0
 
 function readPlugins(){
 
   url=$1
-  echo -e "\n[!] Estos son los plugins de $1:\n"
+  echo -e "\n[!] These are the plugins of $1:\n"
   echo -n "[+] "; curl -s -X GET "$url" | grep -oP '/plugins/\K[^.*/]+' | sort -u 
 }
 
 function helPanel(){
-  echo -e "\n[i] Uso\n"
-  echo -e "\nh) Mostrar este panel\n"
-  echo -e "\nf) Proporcionar ruta del archivo a leer\n"
+  echo -e "\n[i] Use\n"
+  echo -e "\nh) Show this panel\n"
+  echo -e "\nf) URL\n"
 }
 
 while getopts "hf:" arg; do
   case $arg in
     h) ;;
-    f) url=$OPTARG; let parameter_counter+=1;;
+    f) url=$OPTARG; let c+=1;;
   esac
 done
 
-if [ $parameter_counter -eq 1 ]; then
+if [ $c -eq 1 ]; then
   readPlugins "$url"
 else
   helPanel
